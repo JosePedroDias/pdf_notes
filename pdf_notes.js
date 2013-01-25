@@ -1,7 +1,7 @@
 var $ = function(s) { return document.querySelector(s); };
 
 // default file; fetch from get parameter pdf if there...
-var url = 'VASTv3.0.pdf';
+var url = 'test.pdf';
 (function() {
 	var href = location.href;
 	var rgx = /(\?|&)pdf=([^&]+)/g;
