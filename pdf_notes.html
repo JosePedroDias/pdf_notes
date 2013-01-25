@@ -1,39 +1,73 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		
-		<script type="text/javascript" src="pdf.js"></script>
-		
-		<link type="text/css" rel="stylesheet" href="pdf_notes.css">
-	</head>
-	
-	<body>
-		<nav id="toolbar">
-			<button id="first" onclick="toPage(1)">&lt;&lt;</button>
-			<button id="prev" onclick="toPage(-1, true)">&lt;</button>
-			
-			<button id="open" onclick="openPDF( prompt('PDF file?', url) )">open</button>
-			
-			<label id="currPageLbl">page:</label>
-			<input id="currPage" type="number" value="1" min="1" step="1">
-			<label>&nbsp;&nbsp;&nbsp;of</label>
-			<span id="numPages"></span>
-			
-			<label id="zoomLbl">zoom:</label>
-			<select id="zoomSel">
-				<option value="0.5">50%</option>
-				<option value="1" selected>100%</option>
-				<option value="2">200%</option>
-				<option value="4">400%</option>
-			</select>
-			
-			<button id="next" onclick="toPage(1, true)">&gt;</button>
-			<button id="last" onclick="toPage(1000)">&gt;&gt;</button>
-		</nav>
-		
-		<canvas id="cvs"></canvas>
-		
-		<script type="text/javascript" src="pdf_notes.js"></script>
-	</body>
+    <head>
+        <meta charset="utf-8">
+
+        <title>PDF Notes</title>
+
+        <script type="text/javascript" src="pdf.min.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="pdf_notes.css">
+    </head>
+
+    <body>
+        <div id="toolbar">
+            <button class="first" onclick="toPage(1)">&lt;&lt;</button>
+            <button class="prev" onclick="toPage(-1, true)">&lt;</button>
+
+            <button id="open" onclick="openPDF( prompt('PDF file?', url) )">open</button>
+
+            <label id="currPageLbl">page:</label>
+            <input id="currPage" type="number" value="1" min="1" step="1">
+            <label>&nbsp;&nbsp;&nbsp;of</label>
+            <span id="numPages"></span>
+
+            <label id="zoomLbl">zoom:</label>
+            <select id="zoomSel">
+                <option value="0.5">50%</option>
+                <option value="0.75" selected>75%</option>
+                <option value="1">100%</option>
+                <option value="1.5">150%</option>
+                <option value="2">200%</option>
+                <option value="4">400%</option>
+            </select>
+
+            <button class="next" onclick="toPage(1, true)">&gt;</button>
+            <button class="last" onclick="toPage(1000)">&gt;&gt;</button>
+        </div>
+
+        <div id="notesWin">
+            <p>
+                <select id="noteSel">
+                    <option></option>
+                    <option value="highlight">highlight</option>
+                    <option value="takeNote">annotation</option>
+                </select>
+                |
+                <button onclick="importNotes()">import</button>
+                <button onclick="exportNotes()">export</button>
+            </p>
+
+            <p>
+                <button class="first" onclick="toNote(1)">&lt;&lt;</button>
+                <button class="prev" onclick="toNote(-1, true)">&lt;</button>
+
+                <label id="currNoteLbl">note:</label>
+                <input id="currNote" type="number" value="0" min="1" step="1">
+                <label>&nbsp;&nbsp;&nbsp;of</label>
+                <span id="numNotes">0</span>
+
+                <button class="next" onclick="toNote(1, true)">&gt;</button>
+                <button class="last" onclick="toNote(1000)">&gt;&gt;</button>
+            </p>
+
+            <p>
+                <button onclick="deleteNote()">delete it</button>
+            </p>
+        </div>
+
+        <canvas id="cvs"></canvas>
+
+        <script type="text/javascript" src="pdf_notes.js"></script>
+    </body>
 </html>

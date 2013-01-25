@@ -47,7 +47,7 @@ var globalScope = (typeof window === 'undefined') ? this : window;
 var isWorker = (typeof window == 'undefined');
 
 var ERRORS = 0, WARNINGS = 1, INFOS = 5;
-var verbosity = WARNINGS;
+var verbosity = ERRORS;
 
 // The global PDFJS object exposes the API
 // In production, it will be declared outside a global wrapper
@@ -18170,7 +18170,7 @@ var Font = (function FontClosure() {
            '\x02\xBB' + // ySuperScriptYSize
            '\x00\x00' + // ySuperScriptXOffset
            '\x01\xDF' + // ySuperScriptYOffset
-           '\x00\x31' + // yStrikeOutSize
+           '\x00'+'\x31' + // yStrikeOutSize
            '\x01\x02' + // yStrikeOutPosition
            '\x00\x00' + // sFamilyClass
            '\x00\x00\x06' +
@@ -33390,8 +33390,7 @@ var WorkerMessageHandler = {
         return;
       }
 
-      log('page=%d - getOperatorList: time=%dms, len=%d', pageNum,
-                              Date.now() - start, operatorList.fnArray.length);
+      //log('page=%d - getOperatorList: time=%dms, len=%d', pageNum, Date.now() - start, operatorList.fnArray.length);
 
       // Filter the dependecies for fonts.
       var fonts = {};
@@ -37636,7 +37635,7 @@ var JpegImage = (function jpegImage() {
                 huffmanValues[j] = data[offset];
               i += 17 + codeLengthSum;
 
-              ((huffmanTableSpec >> 4) === 0 ? 
+              ((huffmanTableSpec >> 4) === 0 ?
                 huffmanTablesDC : huffmanTablesAC)[huffmanTableSpec & 15] =
                 buildHuffmanTable(codeLengths, huffmanValues);
             }
