@@ -3,64 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		
-		<!--
-			TODO:
-				center page and allow padding
-				create review tool
-					create movable div
-					list comments
-						allow writing rects and text
-				zoom (fit page, fit width, fit height)
-		-->
-		
 		<script type="text/javascript" src="pdf.js"></script>
 		
-		<style type="text/css">
-			body {
-				padding: 0;
-				margin: 0;
-				width: 100%;
-				height: 100%;
-				overflow: auto;
-				background-color:#777;
-				font-family: sans-serif;
-			}
-			
-			#toolbar {
-				position: fixed;
-				left:0;
-				top:0;
-				width: 100%;
-				text-align: center;
-				background-color: #222;
-				color: #FFF;
-				font-size: 12px;
-			}
-			
-			#prev { margin-right: 40px; }
-			#next, #zoomLbl { margin-left: 40px; }
-			
-			#currPage, #numPages {
-				font-size: 12px;
-				text-align: center;
-				border: none;
-				color: #FFF;
-				background: none;
-				width: 3em;
-				display: inline-block;
-			}
-			
-			label {
-				font-weight: bold;
-			}
-			
-			canvas {
-				margin: 30px 5px 5px 5px;
-				box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-				background-color: #FFF;
-				text-align: center
-			}
-		</style>
+		<link type="text/css" rel="stylesheet" href="pdf_notes.css">
 	</head>
 	
 	<body>
@@ -68,7 +13,9 @@
 			<button id="first" onclick="toPage(1)">&lt;&lt;</button>
 			<button id="prev" onclick="toPage(-1, true)">&lt;</button>
 			
-			<label>page:</label>
+			<button id="open" onclick="openPDF( prompt('PDF file?', url) )">open</button>
+			
+			<label id="currPageLbl">page:</label>
 			<input id="currPage" type="number" value="1" min="1" step="1">
 			<label>&nbsp;&nbsp;&nbsp;of</label>
 			<span id="numPages"></span>
@@ -87,74 +34,6 @@
 		
 		<canvas id="cvs"></canvas>
 		
-		<script type="text/javascript">
-			var $ = function(s) { return document.querySelector(s); };
-			
-			// default file; fetch from get parameter pdf if there...
-			var url = 'VASTv3.0.pdf';
-			(function() {
-				var href = location.href;
-				var rgx = /(\?|&)pdf=([^&]+)/g;
-				var m = rgx.exec(href);
-				if (m && m[2]) {
-					url = decodeURIComponent( m[2] );
-				}
-				console.log(url);
-			})();
-			// NOTE: pdf requires same domain or CORS!
-			
-			var currPageNr = 1;
-			var numPages = 1000;
-			var zoom = 1;
-			
-			var cvsEl = $('#cvs')
-			var ctx = cvsEl.getContext('2d');
-
-			// disable workers to avoid yet another cross-origin issue (workers need the URL of
-			// the script to be loaded, and dynamically loading a cross-origin script does not work)
-			PDFJS.disableWorker = true;
-			
-			var renderPage = function(page) {
-				// prepare canvas using PDF page dimensions
-				var viewport = page.getViewport(zoom);
-				cvsEl.width = viewport.width;
-				cvsEl.height = viewport.height;
-
-				// render PDF page into canvas context
-				page.render({canvasContext: ctx, viewport: viewport});
-			};
-			
-			$('#currPage').addEventListener('change', function(ev) {
-				toPage( parseInt(ev.target.value, 10) );
-			});
-			
-			$('#zoomSel').addEventListener('change', function(ev) {
-				zoom = parseFloat(ev.target.value);
-				toPage();
-			});
-			
-			var toPage = function(nr, isRelative) {
-				if (nr === undefined) { nr = currPageNr; }
-				if (isRelative) { currPageNr += nr; } else { currPageNr = nr; }
-				
-				if (currPageNr < 1) { currPageNr = 1; }
-				else if (currPageNr > numPages) { currPageNr = numPages; }
-				
-				$('#currPage').value = currPageNr;
-				
-				window.p.getPage(currPageNr).then(renderPage);
-			};
-
-			// asynchronous download PDF as an ArrayBuffer
-			PDFJS.getDocument(url).then(function(pdf) {
-				window.p = pdf;
-				
-				numPages = window.p.numPages;
-				$('#currPage').setAttribute('max', numPages);
-				$('#numPages').innerHTML = numPages;
-				
-				toPage();
-			});
-		</script>
+		<script type="text/javascript" src="pdf_notes.js"></script>
 	</body>
 </html>
