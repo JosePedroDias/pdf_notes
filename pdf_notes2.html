@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+
+        <title>PDF Notes 2</title>
+
+        <script type="text/javascript" src="pdf.min.js"></script>
+
+        <link type="text/css" rel="stylesheet" href="pdf_notes.css">
+    </head>
+
+    <body>
+        <div id="toolbar">
+            <button id="firstPB" class="first">&lt;&lt;</button>
+            <button id="previousPB" class="prev">&lt;</button>
+
+            <button id="openPDF" onclick="openPDF( prompt('PDF file?', url) )">open</button>
+
+            <label id="currPageLbl">page:</label>
+            <input id="currPage" type="number" value="1" min="1" step="1">
+            <label>&nbsp;&nbsp;&nbsp;of</label>
+            <span id="numPages"></span>
+
+            <label id="zoomLbl">zoom:</label>
+            <select id="zoomSel"></select>
+
+            <button id="nextPB" class="next">&gt;</button>
+            <button id="lastPB" class="last">&gt;&gt;</button>
+        </div>
+
+        <!--<div id="notesWin">
+            <p>
+                <select id="noteSel">
+                    <option></option>
+                    <option value="highlight">highlight</option>
+                    <option value="takeNote">annotation</option>
+                </select>
+                |
+                <button onclick="importNotes()">import</button>
+                <button onclick="exportNotes()">export</button>
+            </p>
+
+            <p>
+                <button class="first" onclick="toNote(1)">&lt;&lt;</button>
+                <button class="prev" onclick="toNote(-1, true)">&lt;</button>
+
+                <label id="currNoteLbl">note:</label>
+                <input id="currNote" type="number" value="0" min="1" step="1">
+                <label>&nbsp;&nbsp;&nbsp;of</label>
+                <span id="numNotes">0</span>
+
+                <button class="next" onclick="toNote(1, true)">&gt;</button>
+                <button class="last" onclick="toNote(1000)">&gt;&gt;</button>
+            </p>
+
+            <p>
+                <button onclick="deleteNote()">delete it</button>
+            </p>
+        </div>-->
+
+        <canvas id="cvs"></canvas>
+
+        <script type="text/javascript" src="pdf_notes2.js"></script>
+        <script type="text/javascript" src="pdf_notes2_gui.js"></script>
+    </body>
+</html>

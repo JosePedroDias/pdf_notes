@@ -1,5 +1,11 @@
-min:
-	@uglifyjs pdf.js > pdf.min.js
+coffee:
+	coffee -c pdf_notes2.coffee
+	coffee -c pdf_notes2_gui.coffee
+
+#min:
+#	@uglifyjs pdf.js > pdf.min.js
+
+
 
 
 

@@ -53,14 +53,29 @@
     var toPage = function(nr, isRelative) {
         if (nr === undefined) { nr = currPageNr; }
         if (isRelative) { currPageNr += nr; } else { currPageNr = nr; }
-        
+
         if (currPageNr < 1) { currPageNr = 1; }
         else if (currPageNr > numPages) { currPageNr = numPages; }
-        
+
         $('#currPage').value = currPageNr;
-        
+
         p.getPage(currPageNr).then(renderPage);
     };
+
+    document.body.addEventListener('keydown', function(ev) {
+        switch (ev.keyCode) {
+            case 39://right
+            case 40://down
+                toPage(1, true);
+                break;
+
+            case 37://left
+            case 38://up
+                toPage(1, true);
+                break;
+        }
+        console.log(ev.keyCode);
+    });
 
 
 
@@ -93,7 +108,7 @@
             (ev.clientX - cvsPos[0] + scroll[0]) / d[0],
             (ev.clientY - cvsPos[1] + scroll[1]) / d[1]
         ];
-        
+
         if (isDown) {
             p0 = pos;
         }
@@ -108,25 +123,25 @@
                 if (!txt) { return; }
                 addNote(['takeNote', txt, p0[0], p0[1]]);
             }
-            
+
             toPage();
         }
     };
     document.body.addEventListener('mousedown', mouseHandler);
     document.body.addEventListener('mouseup',   mouseHandler);
 
-    
+
 
 
 
     var toNote = function(nr, isRelative) {
         if (nr === undefined) { nr = currNoteNr; }
         if (isRelative) { currNoteNr += nr; } else { currNoteNr = nr; }
-        
+
         var min = numNotes ? 1 : 0;
         if (currNoteNr < min) { currNoteNr = min; }
         else if (currNoteNr > numNotes) { currNoteNr = numNotes; }
-        
+
         $('#currNote').value = currNoteNr;
 
         // go there
@@ -232,7 +247,7 @@
         if (clr === undefined) { clr = 'rgba(255, 255, 0, 0.5)'; }
         // yellow: 'rgba(255, 255, 0, 0.5)'
         // magenta: 'rgba(255, 0, 255, 0.5)'
-        
+
         var d = pageInPx;
         x *= d[0];
         w *= d[0];
@@ -246,19 +261,19 @@
         if (fh === undefined) { fh = 0.03; }
         if (clr === undefined) { clr = 'red'; }
         if (bgClr === undefined) { bgClr = 'yellow'; }
-        
+
         var d = pageInPx;
         x *= d[0];
         y *= d[1];
         fh *= Math.min(d[0],d[1]);
-        
+
         ctx.font = fh + 'px sans-serif';
         var w =  ctx.measureText(text, x, y).width;
         var g = fh * 0.25;
         ctx.fillStyle = bgClr;
         //ctx.fillRect(x-g, y-g, w+2*g, fh+2*g);
         ctx.fillRect(x, y, w+2*g, fh+2*g);
-        
+
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
         ctx.fillStyle = clr;
@@ -275,7 +290,7 @@
         pageInPx = [ viewport.width, viewport.height ];
         cvsEl.width = pageInPx[0];
         cvsEl.height = pageInPx[1];
-        
+
         // render PDF page into canvas context
         page.render({canvasContext: ctx, viewport: viewport}).then(renderNotes);
     };
@@ -286,17 +301,17 @@
 
     var openPDF = function(url) {
         if (!url) { return; }
-        
+
         // asynchronous download PDF as an ArrayBuffer
         PDFJS.getDocument(url).then(function(pdf) {
             p = pdf;
-            
+
             currPageNr = 1;
             numPages = p.numPages;
             $('#currPage').value = currPageNr;
             $('#currPage').setAttribute('max', numPages);
             $('#numPages').innerHTML = numPages;
-            
+
             toPage();
         });
     };
@@ -306,7 +321,7 @@
 
 
     // export API
-    window.openPDF     = openPDF; 
+    window.openPDF     = openPDF;
     window.toPage      = toPage;
 
     window.toNote      = toNote;
